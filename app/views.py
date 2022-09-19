@@ -1,4 +1,5 @@
 from multiprocessing import context
+from unicodedata import category
 from django.shortcuts import render
 # from django.views.generic.list import ListView
 from django.views.generic.base import TemplateView
@@ -40,6 +41,8 @@ class ProductDetailView(View):
             'product': product
         }
         return render(request, 'app/productdetail.html', context)
+
+        
 def add_to_cart(request):
  return render(request, 'app/addtocart.html')
 
@@ -58,8 +61,19 @@ def orders(request):
 def change_password(request):
  return render(request, 'app/changepassword.html')
 
-def mobile(request):
- return render(request, 'app/mobile.html')
+# def mobile(request):
+#  return render(request, 'app/mobile.html')
+
+class MobileView(View):
+    def get(self, request, data=None):
+        if data == None:
+            mobiles = Product.objects.filter(category='M')
+        elif data == 'Iphone' or data == 'Samsung':
+            mobiles = Product.objects.filter(category='M').filter(brand=data)
+        context ={
+            'mobiles': mobiles
+        }
+        return render(request, 'app/mobile.html', context)
 
 def login(request):
  return render(request, 'app/login.html')
