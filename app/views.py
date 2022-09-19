@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.shortcuts import render
 # from django.views.generic.list import ListView
 from django.views.generic.base import TemplateView
@@ -29,10 +30,16 @@ class HomeView(View):
 
 
     
+# def product_detail(request):
+#  return render(request, 'app/productdetail.html')
 
-def product_detail(request):
- return render(request, 'app/productdetail.html')
-
+class ProductDetailView(View):
+    def get(self, request, pk):
+        product = Product.objects.get(pk=pk)
+        context ={
+            'product': product
+        }
+        return render(request, 'app/productdetail.html', context)
 def add_to_cart(request):
  return render(request, 'app/addtocart.html')
 
