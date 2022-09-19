@@ -1,15 +1,31 @@
 from django.shortcuts import render
 # from django.views.generic.list import ListView
 from django.views.generic.base import TemplateView
+from django.views import View
+from .models import *
 
+class HomeView(View):
 
-class HomeView(TemplateView):
-    template_name = 'app/home.html'
+    def get(self, request):
+        topwears = Product.objects.filter(category='TW')
+        bottomwears = Product.objects.filter(category='BW')
+        mobiles = Product.objects.filter(category='M')
+        laptops = Product.objects.filter(category='L')
+        print(laptops, 'laptops::::')
+        context = {
+            'topwears':topwears,
+            'bottomwears': bottomwears,
+            'mobiles': mobiles,
+            'laptops': laptops
+        }
+        return render(request, 'app/home.html', context)
+# class HomeView(TemplateView):
+#     template_name = 'app/home.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # context['latest_articles'] = Article.objects.all()[:5]
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         # context['latest_articles'] = Article.objects.all()[:5]
+#         return context
 
 
     
